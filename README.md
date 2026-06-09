@@ -292,4 +292,457 @@ Mục đích của Backpack:
 * Dễ tái sử dụng logic giữa các màn hình
 * Giảm thao tác lặp lại khi phát triển ứng dụng
 
+# 2. Viết app sử dụng Android Studio
+# 2. Xây dựng ứng dụng bằng Android Studio
+
+## 2.1 AndroidManifest.xml
+
+### AndroidManifest.xml là gì?
+
+`AndroidManifest.xml` là file cấu hình quan trọng của ứng dụng Android. File này giúp hệ điều hành biết ứng dụng có những thành phần gì và được phép làm gì.
+
+AndroidManifest.xml dùng để:
+
+* Khai báo Activity
+* Khai báo quyền của ứng dụng
+* Cấu hình ứng dụng
+* Thiết lập các thành phần của app
+
+Ví dụ:
+
+```xml
+<manifest>
+
+    <application>
+
+        <activity
+            android:name=".MainActivity"/>
+
+    </application>
+
+</manifest>
+```
+
+---
+
+### Khai báo quyền cho ứng dụng
+
+Nếu ứng dụng muốn sử dụng Internet, Camera hoặc GPS thì phải khai báo quyền trong `AndroidManifest.xml`.
+
+Ví dụ quyền Internet:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+Ví dụ quyền Camera:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA"/>
+```
+
+### Mục đích của việc khai báo quyền
+
+Việc khai báo quyền giúp:
+
+* Hệ điều hành kiểm soát truy cập
+* Bảo vệ dữ liệu người dùng
+* Tránh ứng dụng sử dụng trái phép tài nguyên thiết bị
+
+Ví dụ:
+
+Nếu ứng dụng sử dụng WebView hoặc gọi API thì cần quyền Internet.
+
+---
+
+## 2.2 Vòng đời của ứng dụng Android
+
+Trong Android, mỗi Activity đều hoạt động theo vòng đời (Lifecycle).
+
+Các hàm quan trọng gồm:
+
+### onCreate()
+
+Được gọi khi Activity vừa được tạo.
+
+Chức năng:
+
+* Khởi tạo giao diện
+* Khởi tạo dữ liệu
+* Ánh xạ View
+
+Ví dụ:
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+}
+```
+
+### onStart()
+
+Được gọi khi Activity bắt đầu hiển thị.
+
+### onResume()
+
+Được gọi khi người dùng bắt đầu tương tác với ứng dụng.
+
+### onPause()
+
+Được gọi khi ứng dụng tạm dừng.
+
+Ví dụ:
+
+* Có cuộc gọi đến
+* Chuyển sang app khác
+
+### onStop()
+
+Được gọi khi Activity không còn hiển thị.
+
+### onDestroy()
+
+Được gọi trước khi Activity bị huỷ.
+
+### Tại sao Android Studio tự sinh hàm onCreate()?
+
+Sau khi tạo project, Android Studio tự sinh hàm `onCreate()` vì đây là nơi khởi tạo ban đầu của Activity.
+
+Hàm này dùng để:
+
+* Hiển thị giao diện bằng `setContentView()`
+* Viết code xử lý ban đầu
+* Khởi tạo component
+
+Nếu không có `onCreate()`, ứng dụng sẽ không hiển thị giao diện.
+
+---
+
+## 2.3 Kiểm tra quyền trong Java
+
+Ngoài việc khai báo trong `AndroidManifest.xml`, nhiều quyền cần được kiểm tra khi ứng dụng chạy.
+
+Ví dụ kiểm tra quyền Camera:
+
+```java
+if (ContextCompat.checkSelfPermission(this,
+        Manifest.permission.CAMERA)
+        != PackageManager.PERMISSION_GRANTED) {
+
+    ActivityCompat.requestPermissions(
+            this,
+            new String[]{
+                    Manifest.permission.CAMERA
+            },
+            1
+    );
+}
+```
+
+### Ý nghĩa của đoạn code
+
+`checkSelfPermission()`
+
+* Kiểm tra ứng dụng đã được cấp quyền hay chưa.
+
+`requestPermissions()`
+
+* Hiển thị hộp thoại xin quyền từ người dùng.
+
+Việc kiểm tra quyền giúp tránh lỗi khi truy cập Camera hoặc bộ nhớ.
+
+---
+
+## 2.4 Giao diện Android bằng XML
+
+Trong Android Studio, giao diện được mô tả bằng file XML nằm trong:
+
+```text
+res/layout
+```
+
+Ví dụ:
+
+```text
+activity_main.xml
+```
+
+XML giúp tách riêng giao diện khỏi code Java.
+
+Ví dụ một TextView:
+
+```xml
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Xin chào"/>
+```
+
+Android Studio còn hỗ trợ giao diện kéo thả (UI Design Review) để xem trước bố cục ứng dụng.
+
+---
+
+## 2.5 Tránh Hardcode dữ liệu
+
+### Hardcode là gì?
+
+Hardcode là việc ghi trực tiếp giá trị vào XML.
+
+Ví dụ không nên dùng:
+
+```xml
+android:text="Hello"
+```
+
+### Cách đúng: lưu vào strings.xml
+
+Android cho phép lưu text trong:
+
+```text
+res/values/strings.xml
+```
+
+Ví dụ:
+
+```xml
+<resources>
+
+    <string name="hello">
+        Hello
+    </string>
+
+</resources>
+```
+
+### Cách tham chiếu
+
+Cú pháp:
+
+```text
+@string/tên_biến
+```
+
+Ví dụ:
+
+```xml
+android:text="@string/hello"
+```
+
+### Ưu điểm
+
+* Dễ chỉnh sửa
+* Không bị lặp dữ liệu
+* Hỗ trợ đa ngôn ngữ
+* Dễ bảo trì ứng dụng
+
+---
+
+## 2.6 LOCATION, LANGUAGE, THEME
+
+Android hỗ trợ tự động lấy dữ liệu theo:
+
+* Location
+* Language
+* Theme
+
+Ví dụ:
+
+Tiếng Việt:
+
+```text
+values-vi
+```
+
+Tiếng Anh:
+
+```text
+values-en
+```
+
+Android sẽ tự động chọn ngôn ngữ phù hợp với điện thoại của người dùng.
+
+### Lợi ích
+
+Nhờ cơ chế này, ứng dụng có thể:
+
+* Tự đổi ngôn ngữ
+* Hỗ trợ nhiều quốc gia
+* Hỗ trợ Dark Mode và Light Mode
+* Tăng trải nghiệm người dùng
+
+---
+
+## 2.7 Đối tượng chứa (Layout Container)
+
+Layout Container dùng để nhóm các component lại với nhau.
+
+### LinearLayout
+
+Sắp xếp theo chiều dọc:
+
+```xml
+android:orientation="vertical"
+```
+
+Sắp xếp theo chiều ngang:
+
+```xml
+android:orientation="horizontal"
+```
+
+Ví dụ:
+
+```xml
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+</LinearLayout>
+```
+
+### Gravity
+
+Dùng để căn chỉnh vị trí hiển thị.
+
+Ví dụ:
+
+```xml
+android:gravity="center"
+```
+
+Một số giá trị thường dùng:
+
+* center
+* left
+* right
+
+---
+
+## 2.8 Code tương tác với Layout
+
+Ví dụ hiển thị text lên màn hình.
+
+### Bước 1: Ánh xạ View
+
+```java
+TextView txt;
+
+txt = findViewById(R.id.txtKetQua);
+```
+
+### Bước 2: Hiển thị text
+
+Không nên hardcode:
+
+```java
+txt.setText("Hello");
+```
+
+Nên dùng:
+
+```java
+txt.setText(getString(R.string.hello));
+```
+
+### Lợi ích
+
+* Tự đổi ngôn ngữ
+* Hỗ trợ Theme
+* Dễ sửa đổi nội dung
+
+---
+
+## 2.9 Event trong Android
+
+Event là hành động của người dùng tác động vào ứng dụng.
+
+Ví dụ:
+
+* Click Button
+* Click TextView
+* Chạm màn hình
+
+Khi xảy ra event, chương trình sẽ thực hiện một đoạn code tương ứng.
+
+### Cách 1: Dùng XML
+
+Trong Layout:
+
+```xml
+<Button
+    android:onClick="xuLyNhanNut"/>
+```
+
+Trong Java:
+
+```java
+public void xuLyNhanNut(View view){
+
+    Toast.makeText(
+            this,
+            "Đã nhấn nút",
+            Toast.LENGTH_SHORT
+    ).show();
+
+}
+```
+
+### Cách 2: Dùng Listener trong Java
+
+Ánh xạ Button:
+
+```java
+Button btn;
+
+btn = findViewById(R.id.btnTinh);
+```
+
+Bắt sự kiện click:
+
+```java
+btn.setOnClickListener(
+        new View.OnClickListener() {
+
+    @Override
+    public void onClick(View v) {
+
+        Toast.makeText(
+                MainActivity.this,
+                "Đã click",
+                Toast.LENGTH_SHORT
+        ).show();
+
+    }
+});
+```
+
+### So sánh
+
+**Cách XML**
+
+Ưu điểm:
+
+* Viết nhanh
+* Dễ làm với app nhỏ
+
+Nhược điểm:
+
+* Khó quản lý app lớn
+
+**Cách Listener Java**
+
+Ưu điểm:
+
+* Linh hoạt
+* Dễ mở rộng
+
+Nhược điểm:
+
+* Code dài hơn
+
+Trong thực tế, `setOnClickListener()` thường được sử dụng nhiều hơn.
+
 
