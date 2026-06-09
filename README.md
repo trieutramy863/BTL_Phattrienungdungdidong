@@ -745,4 +745,117 @@ Nhược điểm:
 
 Trong thực tế, `setOnClickListener()` thường được sử dụng nhiều hơn.
 
+# tạo app1 sử dụng cơ chế Dữ liệu chuẩn bị trước trong Assets
+   - Tạo Project mới trong Android Studio
+       + File → New → New Project → Empty Views Activity
 
+<img width="1123" height="812" alt="image" src="https://github.com/user-attachments/assets/65b57277-1cec-45bc-9644-ecc6b66b1528" />
+
+- Tạo file phone_problems.json: Click chuột phải vào thư mục assets vừa tạo → New → File → đặt tên phone_problems.json
+  
+<img width="434" height="449" alt="image" src="https://github.com/user-attachments/assets/6bbf562b-e562-414a-95dd-a70d02f49b89" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/26b567d7-c9e4-4de8-8f1a-be488b110fb9" />
+
+- Thiết kế giao diện (activity_main.xml)
+   + Mở res/layout/activity_main.xml
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c09e5ee9-c943-4dd3-939c-790d904028fa" />
+
+- Viết code Java (MainActivity.java)
+    + Mở MainActivity.java
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/923fcb87-a42a-457a-9bc6-d52875e9fe8c" />
+
+- Tạo file PhoneProblem.java
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/25ba449d-6089-419f-bf1f-c65fcd108f63" />
+
+- kết quả
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/dc84a9c3-230f-4cb4-b1b0-e27075a1d88f" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/671c58f8-0a36-4c52-8c2f-fd4a5f0f8730" />
+
+# APP2 (android studio): tạo app tương đương với Mit App inventor
+- Tạo Project mới trong Android Studio
+- File → New → New Project → Empty Views Activity
+
+<img width="1132" height="813" alt="image" src="https://github.com/user-attachments/assets/9a682532-e61f-45be-8f16-69d2defc28bd" />
+
+- Tạo thêm Activity 2 và Activity 3
+   + Mặc định dự án mới chỉ có sẵn MainActivity (ta sẽ dùng làm Activity1). Nên phải tạo thêm 2 màn hình nữa:
+   + cột thư mục bên trái (tab Project), tìm đường dẫn: app -> java -> com.example.app2mitinventor
+   + Chuột phải vào thư mục tên package đó -> Chọn New -> Activity-> Empty Views Activity.
+
+<img width="1175" height="1021" alt="image" src="https://github.com/user-attachments/assets/4b79ec22-b10c-4c73-9a19-985e4312fb55" />
+
++  Đặt tên là Activity2 -> Nhấn Finish.
+    
+<img width="1130" height="822" alt="image" src="https://github.com/user-attachments/assets/c042f310-b99a-40c1-b3fb-ae14d56578eb" />
+
++  Đặt tên là Activity3 -> Nhấn Finish.
+
+<img width="1137" height="823" alt="image" src="https://github.com/user-attachments/assets/07ad0e0d-ffef-4635-a317-216ba98b5e3a" />
+
+<img width="582" height="564" alt="image" src="https://github.com/user-attachments/assets/bfe47bdc-bb1b-425b-84f5-efaa486d0261" />
+
+- Cấu hình Quyền Internet trong Manifest
+- Mở file app -> manifests -> AndroidManifest.xml.
+- Thêm dòng xin quyền Internet ngay trên thẻ .
+- Thêm thuộc tính android:usesCleartextTraffic="true" vào trong thẻ . Mục đích: Để app không bị hệ điều hành chặn khi gửi dữ liệu HTTP/HTTPS lên Server
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6665b5ec-fcbb-4f3d-affb-f24b61239304" />
+
+## Viết code cho Màn hình 1 (About + Điều hướng)
+ - Giao diện: Mở file res -> layout -> activity_main.xml
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/82cb0676-e8d7-4383-bdd1-b47415ccc223" />
+
+- Logic: Mở file MainActivity.java.
+- Viết code ánh xạ nút bấm và dùng lệnh Intent để khi click nút 1 sẽ mở Activity2, click nút 2 sẽ mở Activity3
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/34d0011c-a99e-44ed-ae41-4b13136f9489" />
+
+## Viết code cho Màn hình 2 (Giải toán + Gọi API) + Giao diện: Mở file res -> layout -> activity_activity2.xml. Viết code thiết kế gồm 3 ô nhập dữ liệu (EditText cho a, b, c), 1 nút bấm "GIẢI TOÁN" và 1 TextView hiện kết quả.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e33ebc65-1c2b-4cb6-a9c6-f0c89f786d46" />
+
+- Logic Xử lý mạng & Toán học: Activity2.java
+- Mở file Activity2.java.
+- Viết hàm giải phương trình khi ấn nút.
+- Tạo một luồng chạy nền bằng ExecutorService để đóng gói dữ liệu thành chuỗi JSON lồng nhau (Nested JSON) theo đúng cấu trúc: {app_by, input: {...}, output: {...}}.
+- Thực hiện kết nối HttpURLConnection, đẩy dữ liệu theo phương thức POST lên địa chỉ https://k58kmt.tdh.io.vn/api.
+- Nhận kết quả phản hồi {ok:1, stt:1234} từ Server và hiển thị lên màn hình.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/9dcbb4d5-18b8-4e50-befd-34ee9459b02a" />
+
+## Viết code cho Màn hình 3 (WebView Định danh)
+  - Giao diện: Mở file res -> layout -> activity3.xml. Thêm duy nhất một linh kiện chiếm toàn màn hình (match_parent).
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/92501089-abf9-4943-b1d3-67684fe2d543" />
+
+- Logic: Mở file Activity3.java.
+- Kích hoạt JavaScript (setJavaScriptEnabled(true)).
+- Tạo chuỗi URL động bằng cách nối mã sinh viên vào đuôi: "https://k58kmt.tdh.io.vn?masv=" + MA_SINH_VIEN.
+- Gọi lệnh loadUrl() để tải trang web ngay trong ứng dụng.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e59988c1-a8ac-4b3f-ac8f-cceecff7f9c3" />
+
+- Chạy thử và Kiểm tra
+- Test màn 1: Kiểm tra xem thông tin cá nhân đã chuẩn chưa. Ấn nút 1 xem có nhảy sang màn 2 không.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/33253b66-1d1a-4a27-8a43-bdd7a3525dc7" />
+
+- ấn nút chức năng 1 . đã nhảy sang màn hình 2
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/18fc11aa-2537-401d-9cea-d29a6e0bca69" />
+
+- Test màn 2: Nhập thử a, b, c -> Ấn nút giải. App phải hiện kêt quả và báo Gửi API thành công kèm số thứ tự (STT) do Server trả về.
+ 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b1941eda-bab0-431c-8da7-b4cfeb1c04ee" />
+
+- Test màn 3: Ấn nút mở WebView xem trang web có tải mượt mà và nhận đúng mã sinh viên ở thanh địa chỉ không.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/59184da6-4e56-4dfe-ada2-c0061a2a5cf0" />
+
+<img width="1901" height="573" alt="image" src="https://github.com/user-attachments/assets/7d1afa2f-06e5-4709-9925-0fee6c47d931" />
